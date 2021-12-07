@@ -6,6 +6,8 @@ namespace PDS.Implementation.Collections
     internal sealed class FatNode<T>
     {
         private readonly Dictionary<int, T> _values = new();
+        
+        
 
         public FatNode(int versionId, T item)
         {
