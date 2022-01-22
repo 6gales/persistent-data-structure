@@ -8,9 +8,10 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: ./PDS
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET
@@ -18,10 +19,7 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Restore dependencies
-      run: |
-          ls
-          cd ./PDS
-          dotnet restore
+      run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
     - name: Test
