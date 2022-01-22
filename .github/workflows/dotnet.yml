@@ -23,4 +23,12 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Test
-      run: dotnet test --no-build --verbosity normal /p:CollectCoverage=true /p:CoverletOutput=Test/ /p:CoverletOutputFormat=lcov
+      run: dotnet test --no-build --verbosity normal /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov
+    - name: LS
+      run: ls
+    - name: Publish coverage report to coveralls.io
+      uses: coverallsapp/github-action@main
+      with:
+        path-to-lcov: ./PDS.Tests/TestResults/coverage.info 
+    - name: Build and deploy package
+      run: dotnet publish -c=Release
