@@ -27,7 +27,7 @@ jobs:
     - name: LS
       run: ls
     - name: Publish coverage report to coveralls.io
-      uses: coverallsapp/github-action@main
+      uses: coverallsapp/github-action@master
       with:
         path-to-lcov: ./PDS.Tests/TestResults/coverage.info 
     - name: Build and deploy package
