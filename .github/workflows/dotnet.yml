@@ -29,6 +29,10 @@ jobs:
           ls ./PDS.Tests/TestResults
           echo "________"
           cat ./PDS.Tests/TestResults/coverage.info
+          echo "________"
+          cd ./PDS.Tests/TestResults
+          pwd
+          cd ../../
     - name: LS
       run: ls ./PDS.Tests/TestResults
     - name: Publish coverage report to coveralls.io
