@@ -28,7 +28,7 @@ jobs:
           echo "________"
           ls ./PDS.Tests/TestResults
           echo "________"
-          cat ./PDS.Tests/TestResults/coverage.info
+          echo ${{ github.workspace }}
           echo "________"
           cd ./PDS.Tests/TestResults
           pwd
@@ -39,6 +39,6 @@ jobs:
       uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        path-to-lcov: ./PDS.Tests/TestResults/coverage.info 
+        path-to-lcov: /home/runner/work/persistent-data-structure/persistent-data-structure/PDS/PDS.Tests/TestResults/coverage.info 
     - name: Build and deploy package
       run: dotnet publish -c=Release
