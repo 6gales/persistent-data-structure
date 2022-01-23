@@ -24,21 +24,11 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: |
-          dotnet test /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov
+          dotnet test --no-build /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov
           echo "________"
-          ls
-          echo "________"
-          ls ./PDS.Tests
-          echo "________"
-          ls ../
+          ls ./PDS.Tests/TestResults
     - name: LS
-      run: |
-          echo "________"
-          ls
-          echo "________"
-          ls ./PDS.Tests
-          echo "________"
-          ls ../
+      run: ls ./PDS.Tests/TestResults
     - name: Publish coverage report to coveralls.io
       uses: coverallsapp/github-action@master
       with:
