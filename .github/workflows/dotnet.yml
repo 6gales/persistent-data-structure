@@ -27,6 +27,8 @@ jobs:
           dotnet test --no-build /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov
           echo "________"
           ls ./PDS.Tests/TestResults
+          echo "________"
+          cat ./PDS.Tests/TestResults/coverage.info
     - name: LS
       run: ls ./PDS.Tests/TestResults
     - name: Publish coverage report to coveralls.io
