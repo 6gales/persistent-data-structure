@@ -46,5 +46,7 @@ namespace PDS.Collections
         IPersistentLinkedList<T> Replace(T oldValue, T newValue, IEqualityComparer<T>? equalityComparer);
 
         IPersistentLinkedList<T> SetItem(int index, T value);
+
+        new IPersistentLinkedList<T> Clear();
     }
 }
