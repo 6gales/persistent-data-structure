@@ -83,6 +83,8 @@ namespace PDS.Implementation.UndoRedo
             return new UndoRedoLinkedList<T>(_persistentLinkedList.Clear(), u, PersistentStack<IPersistentLinkedList<T>>.Empty);
         }
 
+        public bool IsEmpty => _persistentLinkedList.IsEmpty;
+
         IUndoRedoLinkedList<T> IUndoRedoLinkedList<T>.Insert(int index, T item)
         {
             var u = _undoStack.Push(_persistentLinkedList);
@@ -334,7 +336,7 @@ namespace PDS.Implementation.UndoRedo
         IPersistentLinkedList<T> IPersistentDataStructure<T, IPersistentLinkedList<T>>.AddRange(IReadOnlyCollection<T> items)
         {
             var u = _undoStack.Push(_persistentLinkedList);
-            return new UndoRedoLinkedList<T>(_persistentLinkedList.AddFirst(items), u, PersistentStack<IPersistentLinkedList<T>>.Empty);
+            return new UndoRedoLinkedList<T>(_persistentLinkedList.AddRange(items), u, PersistentStack<IPersistentLinkedList<T>>.Empty);
         }
 
         IPersistentLinkedList<T> IPersistentDataStructure<T, IPersistentLinkedList<T>>.Clear()

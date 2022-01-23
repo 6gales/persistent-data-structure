@@ -20,6 +20,8 @@ namespace PDS.Collections
         IPersistentLinkedList<T> RemoveLast();
 
         bool Contains(T item);
+        
+        new bool IsEmpty { get; }
 
         T Get(int index);
 
