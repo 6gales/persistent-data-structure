@@ -23,22 +23,13 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Test
-      run: |
-          dotnet test --no-build /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov
-          echo "________"
-          ls ./PDS.Tests/TestResults
-          echo "________"
-          echo ${{ github.workspace }}
-          echo "________"
-          cd ./PDS.Tests/TestResults
-          pwd
-          cd ../../
+      run: dotnet test --no-build /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov
     - name: LS
       run: ls ./PDS.Tests/TestResults
     - name: Publish coverage report to coveralls.io
       uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        path-to-lcov: /home/runner/work/persistent-data-structure/persistent-data-structure/PDS/PDS.Tests/TestResults/coverage.info 
+        path-to-lcov: ${{ github.workspace }}/PDS/PDS.Tests/TestResults/coverage.info 
     - name: Build and deploy package
       run: dotnet publish -c=Release
