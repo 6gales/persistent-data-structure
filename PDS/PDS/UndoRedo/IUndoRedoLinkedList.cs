@@ -5,7 +5,7 @@ using PDS.Collections;
 namespace PDS.UndoRedo
 {
     public interface IUndoRedoLinkedList<T> : IPersistentLinkedList<T>,
-        IUndoRedoDataStructure<T, IUndoRedoLinkedList<T>>
+        IUndoRedoDataStructure<T, IUndoRedoLinkedList<T>>, IUndoRedoStack<T>
     {
         new IUndoRedoLinkedList<T> AddFirst(T item);
         
@@ -36,5 +36,7 @@ namespace PDS.UndoRedo
         new IUndoRedoLinkedList<T> Replace(T oldValue, T newValue, IEqualityComparer<T>? equalityComparer);
 
         new IUndoRedoLinkedList<T> SetItem(int index, T value);
+
+        new IUndoRedoLinkedList<T> Clear();
     }
 }

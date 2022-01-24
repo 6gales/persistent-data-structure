@@ -8,5 +8,6 @@ namespace PDS.UndoRedo
         new IUndoRedoStack<T> Pop();
         new IUndoRedoStack<T> Push(T value);
         new IUndoRedoStack<T> Clear();
+        new bool IsEmpty { get; }
     }
 }
