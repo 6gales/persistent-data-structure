@@ -85,7 +85,7 @@ namespace PDS.Implementation.Collections
             var newBuckets = _buckets.SetItem(index, newBucket);
             return new PersistentDictionary<TKey, TValue>(Count, newBuckets);
         }
-        
+
         private void Reallocate(int newSize)
         {
             var array = Enumerable.Range(0, newSize).Select(i => new List<KeyValuePair<TKey, TValue>>()).ToArray();
@@ -98,7 +98,8 @@ namespace PDS.Implementation.Collections
             //TODO: _buckets = new PersistentArray<List<KeyValuePair<TKey, TValue>>>(array);
         }
 
-        IPersistentDictionary<TKey, TValue> IPersistentDictionary<TKey, TValue>.AddRange(IEnumerable<KeyValuePair<TKey, TValue>> pairs)
+        IPersistentDictionary<TKey, TValue> IPersistentDictionary<TKey, TValue>.AddRange(
+            IEnumerable<KeyValuePair<TKey, TValue>> pairs)
         {
             throw new NotImplementedException();
         }
@@ -123,7 +124,8 @@ namespace PDS.Implementation.Collections
             throw new NotImplementedException();
         }
 
-        IPersistentDictionary<TKey, TValue> IPersistentDictionary<TKey, TValue>.SetItems(IEnumerable<KeyValuePair<TKey, TValue>> items)
+        IPersistentDictionary<TKey, TValue> IPersistentDictionary<TKey, TValue>.SetItems(
+            IEnumerable<KeyValuePair<TKey, TValue>> items)
         {
             throw new NotImplementedException();
         }
@@ -133,15 +135,10 @@ namespace PDS.Implementation.Collections
             throw new NotImplementedException();
         }
 
-        IPersistentDictionary<TKey, TValue> IPersistentDictionary<TKey, TValue>.Add(TKey key, TValue value)
-        {
-            throw new NotImplementedException();
-        }
+        IPersistentDictionary<TKey, TValue> IPersistentDictionary<TKey, TValue>.Add(TKey key, TValue value) =>
+            Set(key, value);
 
-        public IPersistentDictionary<TKey, TValue> AddOrUpdate(TKey key, TValue value)
-        {
-            throw new NotImplementedException();
-        }
+        public IPersistentDictionary<TKey, TValue> AddOrUpdate(TKey key, TValue value) => Set(key, value);
 
         public IPersistentDictionary<TKey, TValue> Update(TKey key, Func<TKey, TValue, TValue> valueFactory)
         {
@@ -173,20 +170,19 @@ namespace PDS.Implementation.Collections
             throw new NotImplementedException();
         }
 
-        IImmutableDictionary<TKey, TValue> IImmutableDictionary<TKey, TValue>.SetItems(IEnumerable<KeyValuePair<TKey, TValue>> items)
-        {
-            throw new NotImplementedException();
-        }
+        IImmutableDictionary<TKey, TValue> IImmutableDictionary<TKey, TValue>.SetItems(
+            IEnumerable<KeyValuePair<TKey, TValue>> items) => AddRange(items);
 
         bool IImmutableDictionary<TKey, TValue>.TryGetKey(TKey equalKey, out TKey actualKey)
         {
-            throw new NotImplementedException();
+            actualKey = equalKey;
+            return true;
         }
 
         public PersistentDictionary<TKey, TValue> Remove(TKey key)
         {
             var (index, bucket) = GetBucket(key);
-            
+
             var newBucket = bucket
                 .Where(kv => !kv.Key.Equals(key))
                 .ToList();
@@ -211,55 +207,73 @@ namespace PDS.Implementation.Collections
             return GetEnumerator();
         }
 
-        public IPersistentDictionary<TKey, TValue> Add(KeyValuePair<TKey, TValue> value)
+        public IPersistentDictionary<TKey, TValue> Add(KeyValuePair<TKey, TValue> pair)
         {
-            throw new NotImplementedException();
+            return Set(pair.Key, pair.Value);
         }
 
         IImmutableDictionary<TKey, TValue> IImmutableDictionary<TKey, TValue>.Add(TKey key, TValue value)
         {
-            throw new NotImplementedException();
+            return Set(key, value);
         }
 
-        IImmutableDictionary<TKey, TValue> IImmutableDictionary<TKey, TValue>.AddRange(IEnumerable<KeyValuePair<TKey, TValue>> pairs)
+        IImmutableDictionary<TKey, TValue> IImmutableDictionary<TKey, TValue>.AddRange(
+            IEnumerable<KeyValuePair<TKey, TValue>> pairs)
         {
-            throw new NotImplementedException();
+            return AddRange(pairs);
         }
 
         IImmutableDictionary<TKey, TValue> IImmutableDictionary<TKey, TValue>.Clear()
         {
-            throw new NotImplementedException();
+            return Clear();
         }
 
-        IPersistentDictionary<TKey, TValue> IPersistentDataStructure<KeyValuePair<TKey, TValue>, IPersistentDictionary<TKey, TValue>>.AddRange(IEnumerable<KeyValuePair<TKey, TValue>> items)
+        public IPersistentDictionary<TKey, TValue> AddRange(IEnumerable<KeyValuePair<TKey, TValue>> items)
         {
-            throw new NotImplementedException();
+            var dict = this;
+            foreach (var (key, value) in items)
+            {
+                dict = dict.Set(key, value);
+            }
+
+            return dict;
         }
 
         public IPersistentDictionary<TKey, TValue> AddRange(IReadOnlyCollection<KeyValuePair<TKey, TValue>> items)
         {
-            throw new NotImplementedException();
+            return AddRange(items.AsEnumerable());
         }
 
-        IPersistentDictionary<TKey, TValue> IPersistentDataStructure<KeyValuePair<TKey, TValue>, IPersistentDictionary<TKey, TValue>>.Clear()
+        public IPersistentDictionary<TKey, TValue> Clear()
         {
-            throw new NotImplementedException();
+            return new PersistentDictionary<TKey, TValue>(0, _buckets.Clear());
         }
 
         public bool IsEmpty => Count == 0;
-        public bool ContainsKey(TKey key)
+        public bool ContainsKey(TKey key) => Contains(key);
+
+#pragma warning disable CS8767
+        public bool TryGetValue(TKey key, out TValue? value)
+#pragma warning restore CS8767
         {
-            throw new NotImplementedException();
+            var (_, bucket) = GetBucket(key);
+            foreach (var (k, v) in bucket)
+            {
+                if (k.Equals(key))
+                {
+                    value = v;
+                    return true;
+                }
+            }
+
+            value = default;
+            return false;
         }
 
-        public bool TryGetValue(TKey key, out TValue value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public TValue this[TKey key] => throw new NotImplementedException();
+        public TValue this[TKey key] => GetByKey(key);
 
         public IEnumerable<TKey> Keys => this.Select(kvp => kvp.Key);
+
         public IEnumerable<TValue> Values => this.Select(kvp => kvp.Value);
     }
 }
