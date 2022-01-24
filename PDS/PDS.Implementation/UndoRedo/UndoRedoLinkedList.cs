@@ -166,31 +166,31 @@ namespace PDS.Implementation.UndoRedo
             return new UndoRedoLinkedList<T>(_persistentLinkedList.Add(item), u, PersistentStack<IPersistentLinkedList<T>>.Empty);
         }
 
-        IUndoRedoDataStructure<T, IUndoRedoStack<T>> 
-            IPersistentDataStructure<T, IUndoRedoDataStructure<T, IUndoRedoStack<T>>>.AddRange(IEnumerable<T> items)
+        IUndoRedoDataStructure<T, IUndoRedoLinkedList<T>> 
+            IPersistentDataStructure<T, IUndoRedoDataStructure<T, IUndoRedoLinkedList<T>>>.AddRange(IEnumerable<T> items)
         {
             var u = _undoStack.Push(_persistentLinkedList);
             return new UndoRedoLinkedList<T>(_persistentLinkedList.AddRange(items), u, PersistentStack<IPersistentLinkedList<T>>.Empty);
         }
 
-        IUndoRedoDataStructure<T, IUndoRedoStack<T>> 
-            IPersistentDataStructure<T, IUndoRedoDataStructure<T, IUndoRedoStack<T>>>.AddRange(IReadOnlyCollection<T> items)
+        IUndoRedoDataStructure<T, IUndoRedoLinkedList<T>> 
+            IPersistentDataStructure<T, IUndoRedoDataStructure<T, IUndoRedoLinkedList<T>>>.AddRange(IReadOnlyCollection<T> items)
         {
             var u = _undoStack.Push(_persistentLinkedList);
             return new UndoRedoLinkedList<T>(_persistentLinkedList.AddRange(items), u, PersistentStack<IPersistentLinkedList<T>>.Empty);
         }
 
-        IUndoRedoDataStructure<T, IUndoRedoStack<T>> 
-            IPersistentDataStructure<T, IUndoRedoDataStructure<T, IUndoRedoStack<T>>>.Clear()
+        IUndoRedoDataStructure<T, IUndoRedoLinkedList<T>> 
+            IPersistentDataStructure<T, IUndoRedoDataStructure<T, IUndoRedoLinkedList<T>>>.Clear()
         {
             var u = _undoStack.Push(_persistentLinkedList);
             return new UndoRedoLinkedList<T>(_persistentLinkedList.Clear(), u, PersistentStack<IPersistentLinkedList<T>>.Empty);
         }
 
-        bool IPersistentDataStructure<T, IUndoRedoDataStructure<T, IUndoRedoStack<T>>>.IsEmpty => _persistentLinkedList.IsEmpty;
+        bool IPersistentDataStructure<T, IUndoRedoDataStructure<T, IUndoRedoLinkedList<T>>>.IsEmpty => _persistentLinkedList.IsEmpty;
 
-        IUndoRedoDataStructure<T, IUndoRedoStack<T>> 
-            IPersistentDataStructure<T, IUndoRedoDataStructure<T, IUndoRedoStack<T>>>.Add(T value)
+        IUndoRedoDataStructure<T, IUndoRedoLinkedList<T>> 
+            IPersistentDataStructure<T, IUndoRedoDataStructure<T, IUndoRedoLinkedList<T>>>.Add(T value)
         {
             var u = _undoStack.Push(_persistentLinkedList);
             return new UndoRedoLinkedList<T>(_persistentLinkedList.Add(value), u, PersistentStack<IPersistentLinkedList<T>>.Empty);
@@ -375,7 +375,7 @@ namespace PDS.Implementation.UndoRedo
 
         bool IPersistentDataStructure<T, IPersistentLinkedList<T>>.IsEmpty => _persistentLinkedList.IsEmpty;
 
-        public IUndoRedoDataStructure<T, IUndoRedoStack<T>> Redo()
+        public IUndoRedoDataStructure<T, IUndoRedoLinkedList<T>> Redo()
         {
             if (_redoStack.IsEmpty)
             {
@@ -388,7 +388,7 @@ namespace PDS.Implementation.UndoRedo
             return new UndoRedoLinkedList<T>(lastVersion, u, r);
         }
 
-        public bool TryRedo(out IUndoRedoDataStructure<T, IUndoRedoStack<T>> collection)
+        public bool TryRedo(out IUndoRedoDataStructure<T, IUndoRedoLinkedList<T>> collection)
         {
             if (_redoStack.IsEmpty)
             {
@@ -401,7 +401,7 @@ namespace PDS.Implementation.UndoRedo
         }
 
         public bool CanRedo => !_redoStack.IsEmpty;
-        public IUndoRedoDataStructure<T, IUndoRedoStack<T>> Undo()
+        public IUndoRedoDataStructure<T, IUndoRedoLinkedList<T>> Undo()
         {
             if (_undoStack.IsEmpty)
             {
@@ -414,7 +414,7 @@ namespace PDS.Implementation.UndoRedo
             return new UndoRedoLinkedList<T>(lastVersion, u, r);
         }
 
-        public bool TryUndo(out IUndoRedoDataStructure<T, IUndoRedoStack<T>> collection)
+        public bool TryUndo(out IUndoRedoDataStructure<T, IUndoRedoLinkedList<T>> collection)
         {
             if (_undoStack.IsEmpty)
             {

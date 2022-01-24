@@ -4,8 +4,8 @@ using PDS.Collections;
 
 namespace PDS.UndoRedo
 {
-    public interface IUndoRedoLinkedList<T>: IPersistentLinkedList<T>,
-        IUndoRedoDataStructure<T, IUndoRedoStack<T>>
+    public interface IUndoRedoLinkedList<T> : IPersistentLinkedList<T>,
+        IUndoRedoDataStructure<T, IUndoRedoLinkedList<T>>
     {
         new IUndoRedoLinkedList<T> AddFirst(T item);
         
